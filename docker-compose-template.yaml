@@ -1,0 +1,181 @@
+version: '2'
+
+volumes:
+  orderer.upgrad-network.com:
+  peer0.amazon.upgrad-network.com:
+  peer1.amazon.upgrad-network.com:
+  peer0.flipkart.upgrad-network.com:
+  peer1.flipkart.upgrad-network.com:
+  peer0.paytm.upgrad-network.com:
+  peer1.paytm.upgrad-network.com:
+
+networks:
+  byfn:
+
+services:
+
+  ca.amazon.upgrad-network.com:
+    image: hyperledger/fabric-ca:latest
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca.amazon.upgrad-network.com
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.amazon.upgrad-network.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/AMAZON_CA_PRIVATE_KEY
+    ports:
+      - "7054:7054"
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.amazon.upgrad-network.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/AMAZON_CA_PRIVATE_KEY -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/amazon.upgrad-network.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca.amazon.upgrad-network.com
+    networks:
+      - byfn
+
+  ca.flipkart.upgrad-network.com:
+    image: hyperledger/fabric-ca:latest
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca.flipkart.upgrad-network.com
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.flipkart.upgrad-network.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/FLIPKART_CA_PRIVATE_KEY
+    ports:
+      - "8054:7054"
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.flipkart.upgrad-network.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/FLIPKART_CA_PRIVATE_KEY -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/flipkart.upgrad-network.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca.flipkart.upgrad-network.com
+    networks:
+      - byfn
+
+  ca.paytm.upgrad-network.com:
+    image: hyperledger/fabric-ca:latest
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca.paytm.upgrad-network.com
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.paytm.upgrad-network.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/PAYTM_CA_PRIVATE_KEY
+    ports:
+      - "9054:7054"
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.paytm.upgrad-network.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/PAYTM_CA_PRIVATE_KEY -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/paytm.upgrad-network.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca.paytm.upgrad-network.com
+    networks:
+      - byfn
+
+  orderer.upgrad-network.com:
+    extends:
+      file:   base/docker-compose-base.yaml
+      service: orderer.upgrad-network.com
+    container_name: orderer.upgrad-network.com
+    networks:
+      - byfn
+
+  peer0.amazon.upgrad-network.com:
+    container_name: peer0.amazon.upgrad-network.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.amazon.upgrad-network.com
+    networks:
+      - byfn
+
+  peer1.amazon.upgrad-network.com:
+    container_name: peer1.amazon.upgrad-network.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer1.amazon.upgrad-network.com
+    networks:
+      - byfn
+
+  peer0.flipkart.upgrad-network.com:
+    container_name: peer0.flipkart.upgrad-network.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.flipkart.upgrad-network.com
+    networks:
+      - byfn
+
+  peer1.flipkart.upgrad-network.com:
+    container_name: peer1.flipkart.upgrad-network.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer1.flipkart.upgrad-network.com
+    networks:
+      - byfn
+
+  peer0.paytm.upgrad-network.com:
+    container_name: peer0.paytm.upgrad-network.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.paytm.upgrad-network.com
+    networks:
+      - byfn
+
+  peer1.paytm.upgrad-network.com:
+    container_name: peer1.paytm.upgrad-network.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer1.paytm.upgrad-network.com
+    networks:
+      - byfn
+
+  cli:
+    container_name: cli
+    image: hyperledger/fabric-tools:latest
+    tty: true
+    stdin_open: true
+    environment:
+      - GOPATH=/opt/gopath
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - FABRIC_LOGGING_SPEC=INFO
+      - CORE_PEER_ID=cli
+      - CORE_PEER_ADDRESS=peer0.amazon.upgrad-network.com:7051
+      - CORE_PEER_LOCALMSPID=AmazonMSP
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/amazon.upgrad-network.com/peers/peer0.amazon.upgrad-network.com/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/amazon.upgrad-network.com/peers/peer0.amazon.upgrad-network.com/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/amazon.upgrad-network.com/peers/peer0.amazon.upgrad-network.com/tls/ca.crt
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/amazon.upgrad-network.com/users/Admin@amazon.upgrad-network.com/msp
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: /bin/bash
+    volumes:
+        - /var/run/:/host/var/run/
+        - ./chaincode/:/opt/gopath/src/github.com/hyperledger/fabric/peer/chaincode/
+        - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+        - ./scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
+        - ./channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
+    depends_on:
+      - ca.amazon.upgrad-network.com
+      - ca.flipkart.upgrad-network.com
+      - ca.paytm.upgrad-network.com
+      - orderer.upgrad-network.com
+      - peer0.amazon.upgrad-network.com
+      - peer1.amazon.upgrad-network.com
+      - peer0.flipkart.upgrad-network.com
+      - peer1.flipkart.upgrad-network.com
+      - peer0.paytm.upgrad-network.com
+      - peer1.paytm.upgrad-network.com
+    networks:
+      - byfn
+
+  # chaincode:
+  #   container_name: chaincode
+  #   image: hyperledger/fabric-ccenv
+  #   tty: true
+  #   environment:
+  #     - GOPATH=/opt/gopath
+  #     - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+  #     - FABRIC_LOGGING_SPEC=DEBUG
+  #     - CORE_PEER_ID=example02
+  #     - CORE_PEER_ADDRESS=peer:7051
+  #     - CORE_PEER_LOCALMSPID=DEFAULT
+  #     - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp
+  #   working_dir: /opt/gopath/src/chaincode
+  #   command: /bin/bash -c 'sleep 6000000'
+  #   volumes:
+  #       - /var/run/:/host/var/run/
+  #       - ./msp:/etc/hyperledger/msp
+  #       - ./../chaincode:/opt/gopath/src/chaincode
+

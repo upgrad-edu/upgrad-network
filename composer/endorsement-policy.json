@@ -1,0 +1,35 @@
+{
+  "identities": [
+    {
+      "role": {
+        "name": "member",
+        "mspId": "AmazonMSP"
+      }
+    },
+    {
+      "role": {
+        "name": "member",
+        "mspId": "FlipkartMSP"
+      }
+    },
+    {
+      "role": {
+        "name": "member",
+        "mspId": "PayTMMSP"
+      }
+    }
+  ],
+  "policy": {
+    "1-of": [
+      {
+        "signed-by": 0
+      },
+      {
+        "signed-by": 1
+      },
+      {
+        "signed-by": 2
+      }
+    ]
+  }
+}

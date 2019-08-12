@@ -1,0 +1,102 @@
+rule SystemACL {
+	description: "System ACL to permit all access"
+  	participant: "org.hyperledger.composer.system.Participant"
+  	operation: ALL
+	resource: "org.hyperledger.composer.system.**"
+  	action: ALLOW
+}
+
+rule NetworkAdminUser {
+    description: "Grant business network administrators full access to user resources"
+    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    operation: ALL
+    resource: "**"
+    action: ALLOW
+}
+
+rule NetworkAdminSystem {
+    description: "Grant business network administrators full access to system resources"
+    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    operation: ALL
+    resource: "org.hyperledger.composer.system.**"
+    action: ALLOW
+}
+
+rule ReadParticipants {
+  	description: "All participants can read all participants"
+  	participant: "org.upgrad.network.*"
+  	operation: READ
+    resource: "org.upgrad.network.Trader"
+  	action: ALLOW
+}
+
+rule ReadCommodity {
+  	description: "All participants can read their own commodities"
+  	participant(m): "org.upgrad.network.*"
+  	operation: READ
+    resource(v): "org.upgrad.network.Commodity"
+  	condition: (v.owner.getIdentifier() == m.getIdentifier())
+  	action: ALLOW
+}
+
+rule VendorReadPO {
+  	description: "All vendors can read their own POs"
+  	participant(m): "org.upgrad.network.*"
+  	operation: READ
+    resource(v): "org.upgrad.network.PO"
+  	condition: (v.vendor.getIdentifier() == m.getIdentifier())
+  	action: ALLOW
+}
+
+rule ordererReadPO {
+  	description: "All orderers can read their own POs"
+  	participant(m): "org.upgrad.network.*"
+  	operation: READ
+	resource(v): "org.upgrad.network.PO"
+  	condition: (v.orderer.getIdentifier() == m.getIdentifier())
+  	action: ALLOW
+}
+
+rule CreateTransferTx {
+    description: "Allow all paticipants to create TransferCommodity transactions"
+    participant: "org.upgrad.network.*"
+    operation: CREATE
+    resource: "org.upgrad.network.TransferCommodity"
+    action: ALLOW
+}
+
+rule UpdateTransferTx {
+    description:"Allow all paticipants to transfer only their own commodities"
+    participant(m): "org.upgrad.network.*"
+    operation: UPDATE
+    resource(v): "org.upgrad.network.*"
+    transaction(tx): "org.upgrad.network.TransferCommodity"
+    condition: (v.owner.getIdentifier() == m.getIdentifier())
+    action: ALLOW
+}
+
+rule IssuerReadTransferTx {
+  	description:"Allow all paticipants to read their issued transaction records"
+    participant(m): "org.upgrad.network.*"
+    operation: READ
+    resource(v): "org.upgrad.network.TransferCommodity"
+    condition: (v.issuer.getIdentifier() == m.getIdentifier())
+    action: ALLOW
+}
+
+rule OwnerReadTransferTx {
+    description:"Allow all participants to read their own transaction records"
+    participant(m): "org.upgrad.network.*"
+    operation: READ
+    resource(v): "org.upgrad.network.TransferCommodity"
+    condition: (v.newOwner.getIdentifier() == m.getIdentifier())
+    action: ALLOW
+}
+
+rule ConditionalRuleWithCreation {
+    description: "Allow all participants to create their own resource"
+    participant: "org.upgrad.network.*"
+    operation: CREATE
+    resource: "org.upgrad.network.*"
+  	action: ALLOW
+}

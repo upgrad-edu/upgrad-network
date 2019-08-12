@@ -1,0 +1,168 @@
+version: '2'
+
+services:
+
+  orderer.upgrad-network.com:
+    container_name: orderer.upgrad-network.com
+    image: hyperledger/fabric-orderer:latest #x86_64-1.0.0-rc1
+    environment:
+      - FABRIC_LOGGING_SPEC=INFO
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_GENESISMETHOD=file
+      - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/orderer.genesis.block
+      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+      - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
+      # enabled TLS
+      - ORDERER_GENERAL_TLS_ENABLED=true
+      - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+      - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+      - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      #- GODEBUG=netdns=go
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric
+    command: orderer
+    volumes:
+    - ../channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+    - ../crypto-config/ordererOrganizations/upgrad-network.com/orderers/orderer.upgrad-network.com/msp:/var/hyperledger/orderer/msp
+    - ../crypto-config/ordererOrganizations/upgrad-network.com/orderers/orderer.upgrad-network.com/tls/:/var/hyperledger/orderer/tls
+    - orderer.upgrad-network.com:/var/hyperledger/production/orderer
+    ports:
+      - 7050:7050
+
+  peer0.amazon.upgrad-network.com:
+    container_name: peer0.amazon.upgrad-network.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer0.amazon.upgrad-network.com
+      - CORE_PEER_ADDRESS=peer0.amazon.upgrad-network.com:7051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.amazon.upgrad-network.com:7053
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7053
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.amazon.upgrad-network.com:8051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.amazon.upgrad-network.com:7051
+      - CORE_PEER_LOCALMSPID=AmazonMSP
+    volumes:
+        - /var/run/:/host/var/run/
+        - ../crypto-config/peerOrganizations/amazon.upgrad-network.com/peers/peer0.amazon.upgrad-network.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/amazon.upgrad-network.com/peers/peer0.amazon.upgrad-network.com/tls:/etc/hyperledger/fabric/tls
+        - peer0.amazon.upgrad-network.com:/var/hyperledger/production
+    ports:
+      - 7051:7051
+      - 7053:7053
+
+  peer1.amazon.upgrad-network.com:
+    container_name: peer1.amazon.upgrad-network.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer1.amazon.upgrad-network.com
+      - CORE_PEER_ADDRESS=peer1.amazon.upgrad-network.com:8051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:8051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.amazon.upgrad-network.com:8053
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:8053
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.amazon.upgrad-network.com:8051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.amazon.upgrad-network.com:7051
+      - CORE_PEER_LOCALMSPID=AmazonMSP
+    volumes:
+        - /var/run/:/host/var/run/
+        - ../crypto-config/peerOrganizations/amazon.upgrad-network.com/peers/peer1.amazon.upgrad-network.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/amazon.upgrad-network.com/peers/peer1.amazon.upgrad-network.com/tls:/etc/hyperledger/fabric/tls
+        - peer1.amazon.upgrad-network.com:/var/hyperledger/production
+
+    ports:
+      - 8051:8051
+      - 8053:8053
+
+  peer0.flipkart.upgrad-network.com:
+    container_name: peer0.flipkart.upgrad-network.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer0.flipkart.upgrad-network.com
+      - CORE_PEER_ADDRESS=peer0.flipkart.upgrad-network.com:9051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:9051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.flipkart.upgrad-network.com:9053
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:9053
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.flipkart.upgrad-network.com:9051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.flipkart.upgrad-network.com:10051
+      - CORE_PEER_LOCALMSPID=FlipkartMSP
+    volumes:
+        - /var/run/:/host/var/run/
+        - ../crypto-config/peerOrganizations/flipkart.upgrad-network.com/peers/peer0.flipkart.upgrad-network.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/flipkart.upgrad-network.com/peers/peer0.flipkart.upgrad-network.com/tls:/etc/hyperledger/fabric/tls
+        - peer0.flipkart.upgrad-network.com:/var/hyperledger/production
+    ports:
+      - 9051:9051
+      - 9053:9053
+
+  peer1.flipkart.upgrad-network.com:
+    container_name: peer1.flipkart.upgrad-network.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer1.flipkart.upgrad-network.com
+      - CORE_PEER_ADDRESS=peer1.flipkart.upgrad-network.com:10051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:10051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.flipkart.upgrad-network.com:10053
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:10053
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.flipkart.upgrad-network.com:10051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.flipkart.upgrad-network.com:9051
+      - CORE_PEER_LOCALMSPID=FlipkartMSP
+    volumes:
+        - /var/run/:/host/var/run/
+        - ../crypto-config/peerOrganizations/flipkart.upgrad-network.com/peers/peer1.flipkart.upgrad-network.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/flipkart.upgrad-network.com/peers/peer1.flipkart.upgrad-network.com/tls:/etc/hyperledger/fabric/tls
+        - peer1.flipkart.upgrad-network.com:/var/hyperledger/production
+    ports:
+      - 10051:10051
+      - 10053:10053
+
+  peer0.paytm.upgrad-network.com:
+    container_name: peer0.paytm.upgrad-network.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer0.paytm.upgrad-network.com
+      - CORE_PEER_ADDRESS=peer0.paytm.upgrad-network.com:11051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:11051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.paytm.upgrad-network.com:11053
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:11053
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.paytm.upgrad-network.com:11051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.paytm.upgrad-network.com:12051
+      - CORE_PEER_LOCALMSPID=PayTMMSP
+    volumes:
+        - /var/run/:/host/var/run/
+        - ../crypto-config/peerOrganizations/paytm.upgrad-network.com/peers/peer0.paytm.upgrad-network.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/paytm.upgrad-network.com/peers/peer0.paytm.upgrad-network.com/tls:/etc/hyperledger/fabric/tls
+        - peer0.paytm.upgrad-network.com:/var/hyperledger/production
+    ports:
+      - 11051:11051
+      - 11053:11053
+
+  peer1.paytm.upgrad-network.com:
+    container_name: peer1.paytm.upgrad-network.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer1.paytm.upgrad-network.com
+      - CORE_PEER_ADDRESS=peer1.paytm.upgrad-network.com:12051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:12051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.paytm.upgrad-network.com:12053
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:12053
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.paytm.upgrad-network.com:12051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.paytm.upgrad-network.com:11051
+      - CORE_PEER_LOCALMSPID=PayTMMSP
+    volumes:
+        - /var/run/:/host/var/run/
+        - ../crypto-config/peerOrganizations/paytm.upgrad-network.com/peers/peer1.paytm.upgrad-network.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/paytm.upgrad-network.com/peers/peer1.paytm.upgrad-network.com/tls:/etc/hyperledger/fabric/tls
+        - peer1.paytm.upgrad-network.com:/var/hyperledger/production
+    ports:
+      - 12051:12051
+      - 12053:12053

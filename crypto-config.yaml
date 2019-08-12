@@ -1,0 +1,27 @@
+OrdererOrgs:
+  - Name: Orderer
+    Domain: upgrad-network.com
+    Specs:
+      - Hostname: orderer
+PeerOrgs:
+ - Name: Amazon
+   Domain: amazon.upgrad-network.com
+   EnableNodeOUs: true
+   Template:
+      Count: 2
+   Users:
+      Count: 1
+ - Name: Flipkart
+   Domain: flipkart.upgrad-network.com
+   EnableNodeOUs: true
+   Template:
+      Count: 2
+   Users:
+      Count: 1
+ - Name: PayTM
+   Domain: paytm.upgrad-network.com
+   EnableNodeOUs: true
+   Template:
+      Count: 2
+   Users:
+      Count: 1
