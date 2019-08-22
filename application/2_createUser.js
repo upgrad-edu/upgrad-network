@@ -56,7 +56,7 @@ async function main() {
 		
 		// Add a new user on the network from this organization. This participant will take the role of a shipper, exporter or buyer
 		console.log('Create a new user sourced by Amazon..');
-		const userResponse = await contract.submitTransaction('createUser', '1234', 'Aakash', 'Bansal', 'connect@aakashbansal.com');
+		const userResponse = await contract.submitTransaction('createUser', '12345', 'Shruti', 'Bansal', 'shruti@aakashbansal.com');
 		
 		// process response
 		console.log('Processing create user transaction response..');

@@ -38,7 +38,7 @@ class State {
 		if (!objClass) {
 			throw new Error(`Unknown class of ${json.class}`);
 		}
-		return (objClass)(json);
+		return new (objClass)(json);
 	}
 	
 	static deserializeClass(data, objClass) {
