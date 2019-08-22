@@ -115,7 +115,7 @@ installChaincode() {
   setGlobals $PEER $ORG
   VERSION=${3:-1.0}
   set -x
-  peer chaincode install -n upgrad -v ${VERSION} -l ${LANGUAGE} -p ${CC_SRC_PATH} >&log.txt
+  peer chaincode install -n edtech -v ${VERSION} -l ${LANGUAGE} -p ${CC_SRC_PATH} >&log.txt
   res=$?
   set +x
   cat log.txt
@@ -135,12 +135,12 @@ instantiateChaincode() {
   # the "-o" option
   if [ -z "$CORE_PEER_TLS_ENABLED" -o "$CORE_PEER_TLS_ENABLED" = "false" ]; then
     set -x
-    peer chaincode instantiate -o orderer.upgrad-network.com:7050 -C $CHANNEL_NAME -n upgrad -l ${LANGUAGE} -v ${VERSION} -c '{"Args":["org.upgrad-network.supplychain:instantiate"]}' -P "OR ('AmazonMSP.member','FlipkartMSP.member','PayTMMSP.member')" >&log.txt
+    peer chaincode instantiate -o orderer.upgrad-network.com:7050 -C $CHANNEL_NAME -n edtech -l ${LANGUAGE} -v ${VERSION} -c '{"Args":["org.upgrad-network.edtech:instantiate"]}' -P "OR ('AmazonMSP.member','FlipkartMSP.member','PayTMMSP.member')" >&log.txt
     res=$?
     set +x
   else
     set -x
-    peer chaincode instantiate -o orderer.upgrad-network.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n upgrad -l ${LANGUAGE} -v ${VERSION} -c '{"Args":["org.upgrad-network.supplychain:instantiate"]}' -P "OR ('AmazonMSP.member','FlipkartMSP.member','PayTMMSP.member')" >&log.txt
+    peer chaincode instantiate -o orderer.upgrad-network.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n edtech -l ${LANGUAGE} -v ${VERSION} -c '{"Args":["org.upgrad-network.edtech:instantiate"]}' -P "OR ('AmazonMSP.member','FlipkartMSP.member','PayTMMSP.member')" >&log.txt
     res=$?
     set +x
   fi
@@ -158,12 +158,12 @@ upgradeChaincode() {
 
   if [ -z "$CORE_PEER_TLS_ENABLED" -o "$CORE_PEER_TLS_ENABLED" = "false" ]; then
     set -x
-    peer chaincode upgrade -o orderer.upgrad-network.com:7050 -C $CHANNEL_NAME -n upgrad -l ${LANGUAGE} -v ${VERSION} -p ${CC_SRC_PATH} -c '{"Args":["org.upgrad-network.supplychain:instantiate"]}' -P "OR ('AmazonMSP.member','FlipkartMSP.member','PayTMMSP.member')" >&log.txt
+    peer chaincode upgrade -o orderer.upgrad-network.com:7050 -C $CHANNEL_NAME -n edtech -l ${LANGUAGE} -v ${VERSION} -p ${CC_SRC_PATH} -c '{"Args":["org.upgrad-network.edtech:instantiate"]}' -P "OR ('AmazonMSP.member','FlipkartMSP.member','PayTMMSP.member')" >&log.txt
     res=$?
     set +x
   else
     set -x
-    peer chaincode upgrade -o orderer.upgrad-network.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n upgrad -l ${LANGUAGE} -v ${VERSION} -p ${CC_SRC_PATH} -c '{"Args":["org.upgrad-network.supplychain:instantiate"]}' -P "OR ('AmazonMSP.member','FlipkartMSP.member','PayTMMSP.member')" >&log.txt
+    peer chaincode upgrade -o orderer.upgrad-network.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n edtech -l ${LANGUAGE} -v ${VERSION} -p ${CC_SRC_PATH} -c '{"Args":["org.upgrad-network.edtech:instantiate"]}' -P "OR ('AmazonMSP.member','FlipkartMSP.member','PayTMMSP.member')" >&log.txt
     res=$?
     set +x
   fi
@@ -190,7 +190,7 @@ chaincodeQuery() {
     sleep $DELAY
     echo "Attempting to Query peer${PEER}.${ORG} ...$(($(date +%s) - starttime)) secs"
     set -x
-    peer chaincode query -C $CHANNEL_NAME -n upgrad -c '{"Args":["query","0001"]}' >&log.txt
+    peer chaincode query -C $CHANNEL_NAME -n edtech -c '{"Args":["query","0001"]}' >&log.txt
     res=$?
     set +x
     test $res -eq 0 && VALUE=$(cat log.txt | awk '/Query Result/ {print $NF}')
@@ -309,12 +309,12 @@ chaincodeInvoke() {
   # it using the "-o" option
   if [ -z "$CORE_PEER_TLS_ENABLED" -o "$CORE_PEER_TLS_ENABLED" = "false" ]; then
     set -x
-    peer chaincode invoke -o orderer.upgrad-network.com:7050 -C $CHANNEL_NAME -n upgrad $PEER_CONN_PARMS -c '{"Args":["org.upgrad-network.supplychain:create","0001","Medicine","2","Capital-Comm"]}' >&log.txt
+    peer chaincode invoke -o orderer.upgrad-network.com:7050 -C $CHANNEL_NAME -n edtech $PEER_CONN_PARMS -c '{"Args":["org.upgrad-network.edtech:create","0001","Medicine","2","Capital-Comm"]}' >&log.txt
     res=$?
     set +x
   else
     set -x
-    peer chaincode invoke -o orderer.upgrad-network.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n upgrad $PEER_CONN_PARMS -c '{"Args":["org.upgrad-network.supplychain:create","0001","Medicine","2","Capital-Comm"]}' >&log.txt
+    peer chaincode invoke -o orderer.upgrad-network.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n edtech $PEER_CONN_PARMS -c '{"Args":["org.upgrad-network.edtech:create","0001","Medicine","2","Capital-Comm"]}' >&log.txt
     res=$?
     set +x
   fi

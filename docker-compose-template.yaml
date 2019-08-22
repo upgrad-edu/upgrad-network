@@ -19,7 +19,7 @@ services:
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca.amazon.upgrad-network.com
-      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_ENABLED=false
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.amazon.upgrad-network.com-cert.pem
       - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/AMAZON_CA_PRIVATE_KEY
     ports:
@@ -36,7 +36,7 @@ services:
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca.flipkart.upgrad-network.com
-      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_ENABLED=false
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.flipkart.upgrad-network.com-cert.pem
       - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/FLIPKART_CA_PRIVATE_KEY
     ports:
@@ -53,7 +53,7 @@ services:
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca.paytm.upgrad-network.com
-      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_ENABLED=false
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.paytm.upgrad-network.com-cert.pem
       - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/PAYTM_CA_PRIVATE_KEY
     ports:
@@ -133,7 +133,7 @@ services:
       - CORE_PEER_ID=cli
       - CORE_PEER_ADDRESS=peer0.amazon.upgrad-network.com:7051
       - CORE_PEER_LOCALMSPID=AmazonMSP
-      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_ENABLED=false
       - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/amazon.upgrad-network.com/peers/peer0.amazon.upgrad-network.com/tls/server.crt
       - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/amazon.upgrad-network.com/peers/peer0.amazon.upgrad-network.com/tls/server.key
       - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/amazon.upgrad-network.com/peers/peer0.amazon.upgrad-network.com/tls/ca.crt
@@ -141,11 +141,11 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: /bin/bash
     volumes:
-        - /var/run/:/host/var/run/
-        - ./chaincode/:/opt/gopath/src/github.com/hyperledger/fabric/peer/chaincode/
-        - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
-        - ./scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
-        - ./channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
+      - /var/run/:/host/var/run/
+      - ./chaincode/:/opt/gopath/src/github.com/hyperledger/fabric/peer/chaincode/
+      - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+      - ./scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
+      - ./channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
     depends_on:
       - ca.amazon.upgrad-network.com
       - ca.flipkart.upgrad-network.com
@@ -160,22 +160,28 @@ services:
     networks:
       - byfn
 
-  # chaincode:
-  #   container_name: chaincode
-  #   image: hyperledger/fabric-ccenv
-  #   tty: true
-  #   environment:
-  #     - GOPATH=/opt/gopath
-  #     - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
-  #     - FABRIC_LOGGING_SPEC=DEBUG
-  #     - CORE_PEER_ID=example02
-  #     - CORE_PEER_ADDRESS=peer:7051
-  #     - CORE_PEER_LOCALMSPID=DEFAULT
-  #     - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp
-  #   working_dir: /opt/gopath/src/chaincode
-  #   command: /bin/bash -c 'sleep 6000000'
-  #   volumes:
-  #       - /var/run/:/host/var/run/
-  #       - ./msp:/etc/hyperledger/msp
-  #       - ./../chaincode:/opt/gopath/src/chaincode
+  chaincode:
+    container_name: chaincode
+    image: hyperledger/fabric-ccenv:latest
+    tty: true
+    environment:
+      - GOPATH=/opt/gopath
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - FABRIC_LOGGING_SPEC=INFO
+      - CORE_PEER_ID=chaincode
+      - CORE_PEER_ADDRESS=peer0.amazon.upgrad-network.com:7051
+      - CORE_PEER_LOCALMSPID=AmazonMSP
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/amazon.upgrad-network.com/users/Admin@amazon.upgrad-network.com/msp
+      - CORE_PEER_TLS_ENABLED=false
+      - CORE_TLS_CLIENT_KEY_PATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/amazon.upgrad-network.com/users/Admin@amazon.upgrad-network.com/tls/client.key
+      - CORE_TLS_CLIENT_CERT_PATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/amazon.upgrad-network.com/users/Admin@amazon.upgrad-network.com/tls/client.crt
+      - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/amazon.upgrad-network.com/users/Admin@amazon.upgrad-network.com/tls/ca.crt
+    working_dir: /opt/gopath/src/chaincode
+    command: /bin/bash -c 'sleep 6000000'
+    volumes:
+      - /var/run/:/host/var/run/
+      - ./msp:/etc/hyperledger/msp
+      - ./chaincode:/opt/gopath/src/chaincode
+    networks:
+      - byfn
 

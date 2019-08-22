@@ -19,12 +19,12 @@ services:
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca.amazon.upgrad-network.com
-      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_ENABLED=false
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.amazon.upgrad-network.com-cert.pem
-      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/fa218b8a73deaf425c7742c6f6e08c21d1baf518d17d47cb37756dc36eed5d8f_sk
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/b12162d750fc7e708ca1edf1b07cc9b97f79e403d3a688bafd44c34bc75bd357_sk
     ports:
       - "7054:7054"
-    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.amazon.upgrad-network.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/fa218b8a73deaf425c7742c6f6e08c21d1baf518d17d47cb37756dc36eed5d8f_sk -b admin:adminpw -d'
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.amazon.upgrad-network.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/b12162d750fc7e708ca1edf1b07cc9b97f79e403d3a688bafd44c34bc75bd357_sk -b admin:adminpw -d'
     volumes:
       - ./crypto-config/peerOrganizations/amazon.upgrad-network.com/ca/:/etc/hyperledger/fabric-ca-server-config
     container_name: ca.amazon.upgrad-network.com
@@ -36,12 +36,12 @@ services:
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca.flipkart.upgrad-network.com
-      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_ENABLED=false
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.flipkart.upgrad-network.com-cert.pem
-      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/8a49c69d87f87227527dd925a7e25014b30ee279088a5a8e5899665edc437084_sk
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/d4020a0544be6f5ccbd39b0396a6ed42987443b517a6ac1008237070c449ea7d_sk
     ports:
       - "8054:7054"
-    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.flipkart.upgrad-network.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/8a49c69d87f87227527dd925a7e25014b30ee279088a5a8e5899665edc437084_sk -b admin:adminpw -d'
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.flipkart.upgrad-network.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/d4020a0544be6f5ccbd39b0396a6ed42987443b517a6ac1008237070c449ea7d_sk -b admin:adminpw -d'
     volumes:
       - ./crypto-config/peerOrganizations/flipkart.upgrad-network.com/ca/:/etc/hyperledger/fabric-ca-server-config
     container_name: ca.flipkart.upgrad-network.com
@@ -53,12 +53,12 @@ services:
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca.paytm.upgrad-network.com
-      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_ENABLED=false
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.paytm.upgrad-network.com-cert.pem
-      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/57c38240f01fd6b6c2bee1836bfc9df5689dbd028abbf453991e440c2b58e382_sk
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/bc7e8d7ec8b7dd8b37911f2b64944b0e199b35ca04d9c7e1e8fc2fe1830ad666_sk
     ports:
       - "9054:7054"
-    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.paytm.upgrad-network.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/57c38240f01fd6b6c2bee1836bfc9df5689dbd028abbf453991e440c2b58e382_sk -b admin:adminpw -d'
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.paytm.upgrad-network.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/bc7e8d7ec8b7dd8b37911f2b64944b0e199b35ca04d9c7e1e8fc2fe1830ad666_sk -b admin:adminpw -d'
     volumes:
       - ./crypto-config/peerOrganizations/paytm.upgrad-network.com/ca/:/etc/hyperledger/fabric-ca-server-config
     container_name: ca.paytm.upgrad-network.com
@@ -133,7 +133,7 @@ services:
       - CORE_PEER_ID=cli
       - CORE_PEER_ADDRESS=peer0.amazon.upgrad-network.com:7051
       - CORE_PEER_LOCALMSPID=AmazonMSP
-      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_ENABLED=false
       - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/amazon.upgrad-network.com/peers/peer0.amazon.upgrad-network.com/tls/server.crt
       - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/amazon.upgrad-network.com/peers/peer0.amazon.upgrad-network.com/tls/server.key
       - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/amazon.upgrad-network.com/peers/peer0.amazon.upgrad-network.com/tls/ca.crt
@@ -141,11 +141,11 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: /bin/bash
     volumes:
-        - /var/run/:/host/var/run/
-        - ./chaincode/:/opt/gopath/src/github.com/hyperledger/fabric/peer/chaincode/
-        - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
-        - ./scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
-        - ./channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
+      - /var/run/:/host/var/run/
+      - ./chaincode/:/opt/gopath/src/github.com/hyperledger/fabric/peer/chaincode/
+      - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+      - ./scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
+      - ./channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
     depends_on:
       - ca.amazon.upgrad-network.com
       - ca.flipkart.upgrad-network.com
@@ -160,22 +160,26 @@ services:
     networks:
       - byfn
 
-  # chaincode:
-  #   container_name: chaincode
-  #   image: hyperledger/fabric-ccenv
-  #   tty: true
-  #   environment:
-  #     - GOPATH=/opt/gopath
-  #     - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
-  #     - FABRIC_LOGGING_SPEC=DEBUG
-  #     - CORE_PEER_ID=example02
-  #     - CORE_PEER_ADDRESS=peer:7051
-  #     - CORE_PEER_LOCALMSPID=DEFAULT
-  #     - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp
-  #   working_dir: /opt/gopath/src/chaincode
-  #   command: /bin/bash -c 'sleep 6000000'
-  #   volumes:
-  #       - /var/run/:/host/var/run/
-  #       - ./msp:/etc/hyperledger/msp
-  #       - ./../chaincode:/opt/gopath/src/chaincode
+  chaincode:
+    container_name: chaincode
+    image: hyperledger/fabric-ccenv:latest
+    tty: true
+    environment:
+      - GOPATH=/opt/gopath
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - FABRIC_LOGGING_SPEC=INFO
+      - CORE_PEER_ID=chaincode
+      - CORE_PEER_ADDRESS=peer0.amazon.upgrad-network.com:7051
+      - CORE_PEER_LOCALMSPID=AmazonMSP
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/amazon.upgrad-network.com/users/Admin@amazon.upgrad-network.com/msp
+      - CORE_PEER_TLS_ENABLED=false
+      - CORE_TLS_CLIENT_KEY_PATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/amazon.upgrad-network.com/users/Admin@amazon.upgrad-network.com/tls/client.key
+      - CORE_TLS_CLIENT_CERT_PATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/amazon.upgrad-network.com/users/Admin@amazon.upgrad-network.com/tls/client.crt
+      - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/amazon.upgrad-network.com/users/Admin@amazon.upgrad-network.com/tls/ca.crt
+    working_dir: /opt/gopath/src/chaincode
+    command: /bin/bash -c 'sleep 6000000'
+    volumes:
+      - /var/run/:/host/var/run/
+      - ./msp:/etc/hyperledger/msp
+      - ./chaincode:/opt/gopath/src/chaincode
 

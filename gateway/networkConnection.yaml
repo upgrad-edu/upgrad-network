@@ -1,0 +1,166 @@
+---
+#
+# The network connection profile provides client applications the information about the target
+# blockchain network that are necessary for the applications to interact with it. These are all
+# knowledge that must be acquired from out-of-band sources. This file provides such a source.
+#
+name: "upgrad-network"
+
+x-type: "hlfv1"
+
+description: "Upgrad Network"
+
+version: "1.0"
+
+client:
+  organization: Amazon
+  connection:
+    timeout:
+      peer:
+        endorser: 300
+        eventHub: 300
+        eventReg: 300
+      orderer: 300
+
+channels:
+  channelthreeorgs:
+    orderers:
+      - orderer.upgrad-network.com
+    peers:
+      peer0.amazon.upgrad-network.com:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+      peer1.amazon.upgrad-network.com:
+        endorsingPeer: false
+        chaincodeQuery: false
+        ledgerQuery: true
+        eventSource: false
+      peer0.flipkart.upgrad-network.com:
+        endorsingPeer: false
+        chaincodeQuery: false
+        ledgerQuery: true
+        eventSource: false
+      peer1.flipkart.upgrad-network.com:
+        endorsingPeer: false
+        chaincodeQuery: false
+        ledgerQuery: true
+        eventSource: false
+      peer0.paytm.upgrad-network.com:
+        endorsingPeer: false
+        chaincodeQuery: false
+        ledgerQuery: true
+        eventSource: false
+      peer1.paytm.upgrad-network.com:
+        endorsingPeer: false
+        chaincodeQuery: false
+        ledgerQuery: true
+        eventSource: false
+
+organizations:
+  Amazon:
+    mspid: AmazonMSP
+    peers:
+      - peer0.amazon.upgrad-network.com
+      - peer1.amazon.upgrad-network.com
+    certificateAuthorities:
+      - ca.amazon.upgrad-network.com
+  Flipkart:
+    mspid: FlipkartMSP
+    peers:
+      - peer0.flipkart.upgrad-network.com
+      - peer1.flipkart.upgrad-network.com
+    certificateAuthorities:
+      - ca.flipkart.upgrad-network.com
+  Paytm:
+    mspid: PayTMMSP
+    peers:
+      - peer0.paytm.upgrad-network.com
+      - peer1.paytm.upgrad-network.com
+    certificateAuthorities:
+      - ca.paytm.upgrad-network.com
+
+orderers:
+  orderer.upgrad-network.com:
+    url: grpc://localhost:7050
+    grpcOptions:
+      ssl-target-name-override: orderer.upgrad-network.com
+    tlsCACerts:
+      path: /Users/aakash/WebstormProjects/upgrad-network/crypto-config/ordererOrganizations/upgrad-network.com/orderers/orderer.upgrad-network.com/msp/tlscacerts/tlsca.upgrad-network.com-cert.pem
+
+peers:
+  peer0.amazon.upgrad-network.com:
+    url: grpc://localhost:7051
+    grpcOptions:
+      ssl-target-name-override: peer0.amazon.upgrad-network.com
+      request-timeout: 120001
+    tlsCACerts:
+      path: /Users/aakash/WebstormProjects/upgrad-network/crypto-config/peerOrganizations/amazon.upgrad-network.com/peers/peer0.amazon.upgrad-network.com/msp/tlscacerts/tlsca.amazon.upgrad-network.com-cert.pem
+  peer1.amazon.upgrad-network.com:
+    url: grpc://localhost:8051
+    grpcOptions:
+      ssl-target-name-override: peer1.amazon.upgrad-network.com
+      request-timeout: 120001
+    tlsCACerts:
+      path: /Users/aakash/WebstormProjects/upgrad-network/crypto-config/peerOrganizations/amazon.upgrad-network.com/peers/peer1.amazon.upgrad-network.com/msp/tlscacerts/tlsca.amazon.upgrad-network.com-cert.pem
+  peer0.flipkart.upgrad-network.com:
+    url: grpc://localhost:9051
+    grpcOptions:
+      ssl-target-name-override: peer0.flipkart.upgrad-network.com
+      request-timeout: 120001
+    tlsCACerts:
+      path: /Users/aakash/WebstormProjects/upgrad-network/crypto-config/peerOrganizations/flipkart.upgrad-network.com/peers/peer0.flipkart.upgrad-network.com/msp/tlscacerts/tlsca.flipkart.upgrad-network.com-cert.pem
+  peer1.flipkart.upgrad-network.com:
+    url: grpc://localhost:10051
+    grpcOptions:
+      ssl-target-name-override: peer1.flipkart.upgrad-network.com
+      request-timeout: 120001
+    tlsCACerts:
+      path: /Users/aakash/WebstormProjects/upgrad-network/crypto-config/peerOrganizations/flipkart.upgrad-network.com/peers/peer1.flipkart.upgrad-network.com/msp/tlscacerts/tlsca.flipkart.upgrad-network.com-cert.pem
+  peer0.paytm.upgrad-network.com:
+    url: grpc://localhost:11051
+    grpcOptions:
+      ssl-target-name-override: peer0.paytm.upgrad-network.com
+      request-timeout: 120001
+    tlsCACerts:
+      path: /Users/aakash/WebstormProjects/upgrad-network/crypto-config/peerOrganizations/paytm.upgrad-network.com/peers/peer0.paytm.upgrad-network.com/msp/tlscacerts/tlsca.paytm.upgrad-network.com-cert.pem
+  peer1.paytm.upgrad-network.com:
+    url: grpc://localhost:12051
+    grpcOptions:
+      ssl-target-name-override: peer1.paytm.upgrad-network.com
+      request-timeout: 120001
+    tlsCACerts:
+      path: /Users/aakash/WebstormProjects/upgrad-network/crypto-config/peerOrganizations/paytm.upgrad-network.com/peers/peer1.paytm.upgrad-network.com/msp/tlscacerts/tlsca.paytm.upgrad-network.com-cert.pem
+
+certificateAuthorities:
+  ca.amazon.upgrad-network.com:
+    url: http://localhost:7054
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: /Users/aakash/WebstormProjects/upgrad-network/crypto-config/peerOrganizations/amazon.upgrad-network.com/ca/ca.amazon.upgrad-network.com-cert.pem
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw
+    caName: ca.amazon.upgrad-network.com
+  ca.flipkart.upgrad-network.com:
+    url: http://localhost:8054
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: /Users/aakash/WebstormProjects/upgrad-network/crypto-config/peerOrganizations/flipkart.upgrad-network.com/ca/ca.flipkart.upgrad-network.com-cert.pem
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw
+    caName: ca.flipkart.upgrad-network.com
+  ca.paytm.upgrad-network.com:
+    url: http://localhost:9054
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: /Users/aakash/WebstormProjects/upgrad-network/crypto-config/peerOrganizations/paytm.upgrad-network.com/ca/ca.paytm.upgrad-network.com-cert.pem
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw
+    caName: ca.paytm.upgrad-network.com
