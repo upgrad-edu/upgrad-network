@@ -1,17 +1,15 @@
 'use strict';
 
 /**
- * This is a Node.JS application to add a new user on the network sourced by Amazon.
+ * This is a Node.JS application to make a user join a course
  * Defaults:
- * UserId: 1234
- * fname: Aakash
- * lname: Bansal
- * Email: connect@aakashbansal.com
+ * userId: 0001
+ * courseId: 0001
  */
 
 const fs = require('fs');
 const yaml = require('js-yaml');
-const { FileSystemWallet, Gateway } = require('fabric-network');
+const {FileSystemWallet, Gateway} = require('fabric-network');
 const User = require('../chaincode/lib/participants/user');
 
 // A wallet stores a collection of identities for use.
@@ -37,53 +35,50 @@ async function main() {
 		let connectionOptions = {
 			wallet: wallet,
 			identity: userName,
-			discovery: { enabled: false, asLocalhost: true }
+			discovery: {enabled: false, asLocalhost: true}
 		};
 		
 		// Connect to gateway using specified parameters
 		console.log('Connecting to Fabric Gateway');
 		await gateway.connect(connectionProfile, connectionOptions);
 		
-		// Access channelthreeorgs network
+		// Access reliancesupplychain network
 		console.log('Use network channel: channelthreeorgs');
 		const network = await gateway.getNetwork('channelthreeorgs');
 		
-		// Get instance of deployed Edtech contract
+		// Get instance of deployed Supply Chain contract
 		// @param Name of chaincode
 		// @param Name of smart contract
 		console.log('Use org.upgrad-network.edtech smart contract..');
 		const contract = await network.getContract('edtech', 'org.upgrad-network.edtech');
 		
-		// Add a new user on the network from this organization.
-		console.log('Create a new user sourced by Amazon..');
-		const userResponse = await contract.submitTransaction('createUser', '0001', 'Aakash', 'Bansal', 'connect@aakashbansal.com');
+		// Join a new course
+		console.log('Joining userId 0001 to a new course..');
+		const joinResponse = await contract.submitTransaction('joinCourse', '0001', '0001');
 		
 		// process response
-		console.log('Processing create user transaction response..');
-		let user = User.fromBuffer(userResponse);
+		console.log('Processing join course transaction response..');
+		let user = User.fromBuffer(joinResponse);
 		console.log(user);
-		console.log('Create User Transaction complete.');
+		console.log('Join Course Transaction complete.');
 		
 	} catch (error) {
-		
 		console.log(`Error processing transaction. ${error}`);
 		console.log(error.stack);
-		
 	} finally {
-		
 		// Disconnect from the gateway
 		console.log('Disconnecting from Fabric Gateway.');
 		gateway.disconnect();
-		
 	}
 }
+
 main().then(() => {
 	
-	console.log('Create User program complete.');
+	console.log('Join Course program complete.');
 	
 }).catch((e) => {
 	
-	console.log('Create User program exception.');
+	console.log('Join Course program exception.');
 	console.log(e);
 	console.log(e.stack);
 	process.exit(-1);

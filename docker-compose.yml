@@ -21,10 +21,10 @@ services:
       - FABRIC_CA_SERVER_CA_NAME=ca.amazon.upgrad-network.com
       - FABRIC_CA_SERVER_TLS_ENABLED=false
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.amazon.upgrad-network.com-cert.pem
-      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/b12162d750fc7e708ca1edf1b07cc9b97f79e403d3a688bafd44c34bc75bd357_sk
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/4d1d9639e2bcf48aede4f929bd0472e9f3845c013fc3e4225a75cf8926620b1a_sk
     ports:
       - "7054:7054"
-    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.amazon.upgrad-network.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/b12162d750fc7e708ca1edf1b07cc9b97f79e403d3a688bafd44c34bc75bd357_sk -b admin:adminpw -d'
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.amazon.upgrad-network.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/4d1d9639e2bcf48aede4f929bd0472e9f3845c013fc3e4225a75cf8926620b1a_sk -b admin:adminpw -d'
     volumes:
       - ./crypto-config/peerOrganizations/amazon.upgrad-network.com/ca/:/etc/hyperledger/fabric-ca-server-config
     container_name: ca.amazon.upgrad-network.com
@@ -38,10 +38,10 @@ services:
       - FABRIC_CA_SERVER_CA_NAME=ca.flipkart.upgrad-network.com
       - FABRIC_CA_SERVER_TLS_ENABLED=false
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.flipkart.upgrad-network.com-cert.pem
-      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/d4020a0544be6f5ccbd39b0396a6ed42987443b517a6ac1008237070c449ea7d_sk
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/f894d34db01d3ed8c4753428d65e7af856d03d5b8f5f24b91a3be98bf4219d24_sk
     ports:
       - "8054:7054"
-    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.flipkart.upgrad-network.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/d4020a0544be6f5ccbd39b0396a6ed42987443b517a6ac1008237070c449ea7d_sk -b admin:adminpw -d'
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.flipkart.upgrad-network.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/f894d34db01d3ed8c4753428d65e7af856d03d5b8f5f24b91a3be98bf4219d24_sk -b admin:adminpw -d'
     volumes:
       - ./crypto-config/peerOrganizations/flipkart.upgrad-network.com/ca/:/etc/hyperledger/fabric-ca-server-config
     container_name: ca.flipkart.upgrad-network.com
@@ -55,10 +55,10 @@ services:
       - FABRIC_CA_SERVER_CA_NAME=ca.paytm.upgrad-network.com
       - FABRIC_CA_SERVER_TLS_ENABLED=false
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.paytm.upgrad-network.com-cert.pem
-      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/bc7e8d7ec8b7dd8b37911f2b64944b0e199b35ca04d9c7e1e8fc2fe1830ad666_sk
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/98670182aec9c61138556e9d7bf33c52405514a7d38e08a5d700ddd6a511614a_sk
     ports:
       - "9054:7054"
-    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.paytm.upgrad-network.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/bc7e8d7ec8b7dd8b37911f2b64944b0e199b35ca04d9c7e1e8fc2fe1830ad666_sk -b admin:adminpw -d'
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.paytm.upgrad-network.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/98670182aec9c61138556e9d7bf33c52405514a7d38e08a5d700ddd6a511614a_sk -b admin:adminpw -d'
     volumes:
       - ./crypto-config/peerOrganizations/paytm.upgrad-network.com/ca/:/etc/hyperledger/fabric-ca-server-config
     container_name: ca.paytm.upgrad-network.com
@@ -182,4 +182,6 @@ services:
       - /var/run/:/host/var/run/
       - ./msp:/etc/hyperledger/msp
       - ./chaincode:/opt/gopath/src/chaincode
+    networks:
+      - byfn
 

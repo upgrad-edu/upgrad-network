@@ -10,12 +10,21 @@ class UserList extends StateList{
 		this.use(User);
 	}
 	
+	/**
+	 * Returns the User object stored in blockchain identified by this key
+	 * @param userKey
+	 * @returns {Promise<User>}
+	 */
 	async getUser(userKey) {
 		return this.getState(userKey);
 	}
 	
 	async addUser(user) {
 		return this.addState(user);
+	}
+	
+	async updateUser(user) {
+		return this.updateState(user);
 	}
 }
 
