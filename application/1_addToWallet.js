@@ -27,7 +27,7 @@ async function main() {
 		// Fetch the credentials from our previously generated Crypto Materials required to create this user's identity
 		const credPath = path.join(fixtures, '/crypto-config/peerOrganizations/amazon.upgrad-network.com/users/Admin@amazon.upgrad-network.com');
 		const cert = fs.readFileSync(path.join(credPath, '/msp/signcerts/Admin@amazon.upgrad-network.com-cert.pem')).toString();
-		const key = fs.readFileSync(path.join(credPath, '/msp/keystore/7768403973ae4ae4d4fbaa5f3a0028212986de8ea3b85c5b9564b1f3dbd168c1_sk')).toString();
+		const key = fs.readFileSync(path.join(credPath, '/msp/keystore/af30f29edc31aa602c35da37b486d4faa762debd1a093b5c334d0e779bc42743_sk')).toString();
 		
 		// Load credentials into wallet
 		const identityLabel = 'Admin@amazon.upgrad-network.com';

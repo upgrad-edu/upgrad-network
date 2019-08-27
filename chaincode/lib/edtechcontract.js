@@ -40,6 +40,7 @@ class EdTechContract extends Contract {
 	async createUser(ctx, userId, fname, lname, email) {
 		let msgSender = ctx.clientIdentity.getID();
 		let userKey = User.makeKey([userId]);
+		// Checking if the user already exists
 		let user = await ctx.userList
 				.getUser(userKey)
 				.catch(err => console.log(err));
